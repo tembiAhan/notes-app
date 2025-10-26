@@ -6,7 +6,7 @@ const {
   deleteNoteByIdHandler,
 } = require('./handler');
 
-const route = [
+const routes = [
   {
     method: 'POST',
     path: '/notes',
@@ -34,4 +34,4 @@ const route = [
   },
 ];
 
-module.exports = route;
+module.exports = routes;

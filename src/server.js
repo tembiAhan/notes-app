@@ -1,5 +1,5 @@
 const Hapi = require('@hapi/hapi');
-const route = require('./route');
+const routes = require('./routes');
 
 const init = async () => {
   const server = Hapi.server({
@@ -12,7 +12,7 @@ const init = async () => {
     },
   });
 
-  server.route(route);
+  server.route(routes);
   await server.start();
   console.log(`Server sedang berjalan di ${server.info.uri}`);
 };
