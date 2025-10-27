@@ -1,3 +1,4 @@
+const express = require('express');
 const {
   addNoteHandler,
   getAllNotesHandler,
@@ -6,32 +7,12 @@ const {
   deleteNoteByIdHandler,
 } = require('./handler');
 
-const routes = [
-  {
-    method: 'POST',
-    path: '/notes',
-    handler: addNoteHandler,
-  },
-  {
-    method: 'GET',
-    path: '/notes',
-    handler: getAllNotesHandler,
-  },
-  {
-    method: 'GET',
-    path: '/notes/{id}',
-    handler: getNoteByIdHandler,
-  },
-  {
-    method: 'PUT',
-    path: '/notes/{id}',
-    handler: editNoteByIdHandler,
-  },
-  {
-    method: 'DELETE',
-    path: '/notes/{id}',
-    handler: deleteNoteByIdHandler,
-  },
-];
+const routes = express.Router();
+
+routes.post('/', addNoteHandler);
+routes.get('/', getAllNotesHandler);
+routes.get('/:id', getNoteByIdHandler);
+routes.put('/:id', editNoteByIdHandler);
+routes.delete('/:id', deleteNoteByIdHandler);
 
 module.exports = routes;
