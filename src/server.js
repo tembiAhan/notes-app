@@ -1,16 +1,12 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const notesRouter = require('./api/notes/routes');
 const ClientError = require('./exception/ClientError');
 const app = express();
 
 app.use(express.json());
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Method', 'POST,GET,PUT,DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+app.use(cors());
 
 app.use('/notes', notesRouter);
 
@@ -23,7 +19,6 @@ app.use((err, req, res, next) => {
       message: err.message,
     });
   }
-
   console.error(err);
 
   // Kalau error memiliki statusCode 400 (Bad Request)
