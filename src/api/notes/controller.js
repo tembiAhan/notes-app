@@ -6,7 +6,13 @@ const notesService = new NotesService();
 const postNoteController = asyncHandler(async (req, res) => {
   validatePayload(req.body);
   const { title = 'untitled', body, tags } = req.body;
-  const noteId = await notesService.addNote({ title, body, tags });
+  const { userId } = req;
+  const noteId = await notesService.addNote({
+    title,
+    body,
+    tags,
+    owner: userId,
+  });
 
   res.status(201).json({
     status: 'success',
@@ -18,7 +24,9 @@ const postNoteController = asyncHandler(async (req, res) => {
 });
 
 const getNotesController = asyncHandler(async (req, res) => {
-  const notes = await notesService.getNotes();
+  const { id } = req.params;
+  const { userId } = req;
+  const notes = await notesService.getNotes(id, userId);
   res.status(200).json({
     status: 'success',
     data: {
@@ -28,7 +36,12 @@ const getNotesController = asyncHandler(async (req, res) => {
 });
 
 const getNoteByIdController = asyncHandler(async (req, res) => {
-  const note = await notesService.getNoteById(req.params.id);
+  const { id } = req.params;
+  const { userId } = req;
+
+  await notesService.verifyNoteOwner(id, userId);
+  const note = await notesService.getNoteById(id);
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -39,7 +52,12 @@ const getNoteByIdController = asyncHandler(async (req, res) => {
 
 const putNoteByIdController = asyncHandler(async (req, res) => {
   validatePayload(req.body);
-  await notesService.editNoteById(req.params.id, req.body);
+  const { id } = req.params;
+  const { userId } = req;
+
+  await notesService.verifyNoteOwner(id, userId);
+  await notesService.editNoteById(id, req.body);
+
   res.status(200).json({
     status: 'success',
     message: 'Catatan berhasil diperbarui',
@@ -47,7 +65,12 @@ const putNoteByIdController = asyncHandler(async (req, res) => {
 });
 
 const deleteNoteByIdController = asyncHandler(async (req, res) => {
-  await notesService.deleteNoteById(req.params.id);
+  const { id } = req.params;
+  const { userId } = req;
+
+  await notesService.verifyNoteOwner(id, userId);
+  await notesService.deleteNoteById(id);
+
   res.status(200).json({
     status: 'success',
     message: 'Catatan berhasil dihapus',
