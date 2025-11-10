@@ -1,17 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const NotesService = require('../../service/postgre/NotesService');
-const NotesController = require('./notesController');
-const { validatePayload } = require('./validator');
+const auth = require('../../middleware/auth');
+const controller = require('./controller');
 
-const service = new NotesService();
-const controller = new NotesController(service, { validatePayload });
-
-router.post('/', controller.postNote);
-router.get('/', controller.getNotes);
-router.get('/:id', controller.getNoteById);
-router.put('/:id', controller.putNoteById);
-router.delete('/:id', controller.deleteNoteById);
+router.post('/', auth, controller.postNoteController);
+router.get('/', controller.getNotesController);
+router.get('/:id', controller.getNoteByIdController);
+router.put('/:id', auth, controller.putNoteByIdController);
+router.delete('/:id', auth, controller.deleteNoteByIdController);
 
 module.exports = router;
