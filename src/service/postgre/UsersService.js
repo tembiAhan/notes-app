@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const InvariantError = require('../../exception/InvariantError');
 const NotFoundError = require('../../exception/NotFoundError');
-const AuthenticationsError = require('../../exception/AuthenticationsError');
+const AuthenticationError = require('../../exception/AuthenticationError');
 
 class UsersService {
   constructor() {
@@ -73,7 +73,7 @@ class UsersService {
 
     const match = await bcrypt.compare(password, hashedPassword);
     if (!match) {
-      throw new AuthenticationsError('Kredensial yang Anda berikan salah');
+      throw new AuthenticationError('Kredensial yang Anda berikan salah');
     }
 
     return id;

@@ -1,5 +1,5 @@
 const tokenManager = require('../utils/tokenManager');
-const AuthenticationsError = require('../exception/AuthenticationsError');
+const AuthenticationError = require('../exception/AuthenticationError');
 const InvariantError = require('../exception/InvariantError');
 
 const auth = (req, res, next) => {
@@ -7,7 +7,7 @@ const auth = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-      throw new AuthenticationsError('Token tidak ditemukan');
+      throw new AuthenticationError('Token tidak ditemukan');
     }
 
     const token = authHeader.split(' ')[1];
