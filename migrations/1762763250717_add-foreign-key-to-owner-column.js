@@ -4,7 +4,8 @@ export const up = (pgm) => {
     VALUES('old_notes', 'old_notes', 'old_notes', 'old_notes')`
   );
 
-  pgm.sql('UPDATE notes SET owner = "old_notes" WHERE owner IS NULL');
+  /* eslint-disable */
+  pgm.sql("UPDATE notes SET owner = 'old_notes' WHERE owner IS NULL");
 
   pgm.addConstraint(
     'notes',
@@ -16,7 +17,7 @@ export const up = (pgm) => {
 export const down = (pgm) => {
   pgm.dropConstraint('notes', 'fk_notes.owner_users.id');
 
-  pgm.sql('UPDATE notes SET owner = NULL WHERE owner = "old_notes"');
+  pgm.sql("UPDATE notes SET owner = NULL WHERE owner = 'old_notes'");
 
-  pgm.sql('DELETE FROM users WHERE id = "old_notes');
+  pgm.sql("DELETE FROM users WHERE id = 'old_notes'");
 };
