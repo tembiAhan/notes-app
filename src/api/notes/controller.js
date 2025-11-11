@@ -24,9 +24,8 @@ const postNoteController = asyncHandler(async (req, res) => {
 });
 
 const getNotesController = asyncHandler(async (req, res) => {
-  const { id } = req.params;
   const { userId } = req;
-  const notes = await notesService.getNotes(id, userId);
+  const notes = await notesService.getNotes(userId);
   res.status(200).json({
     status: 'success',
     data: {
@@ -39,7 +38,7 @@ const getNoteByIdController = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { userId } = req;
 
-  await notesService.verifyNoteOwner(id, userId);
+  await notesService.verifyNoteAccess(id, userId);
   const note = await notesService.getNoteById(id);
 
   res.status(200).json({
@@ -55,12 +54,17 @@ const putNoteByIdController = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { userId } = req;
 
-  await notesService.verifyNoteOwner(id, userId);
+  await notesService.verifyNoteAccess(id, userId);
   await notesService.editNoteById(id, req.body);
+
+  const note = await notesService.getNoteById(id);
 
   res.status(200).json({
     status: 'success',
     message: 'Catatan berhasil diperbarui',
+    data: {
+      note,
+    },
   });
 });
 
