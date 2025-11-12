@@ -76,8 +76,6 @@ class NotesService {
     if (!result.rows.length) {
       throw new NotFoundError('Gagal memperbarui catatan. Id tidak ditemukan');
     }
-
-    return result.rows[0];
   }
 
   async deleteNoteById(id) {

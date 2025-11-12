@@ -10,9 +10,10 @@ const auth = (req, res, next) => {
       throw new AuthenticationError('Token tidak ditemukan');
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.replace(/^Bearer\s+/i, '').trim();
+
     if (!token) {
-      throw new InvariantError('Format token tidak valdi');
+      throw new InvariantError('Token tidak provided');
     }
 
     const decoded = tokenManager.verifyAccessToken(token);

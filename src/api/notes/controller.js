@@ -57,14 +57,9 @@ const putNoteByIdController = asyncHandler(async (req, res) => {
   await notesService.verifyNoteAccess(id, userId);
   await notesService.editNoteById(id, req.body);
 
-  const note = await notesService.getNoteById(id);
-
   res.status(200).json({
     status: 'success',
     message: 'Catatan berhasil diperbarui',
-    data: {
-      note,
-    },
   });
 });
 
