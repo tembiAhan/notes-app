@@ -1,7 +1,7 @@
 export const up = (pgm) => {
   pgm.createTable('notes', {
     id: {
-      type: 'VARCHAR(60)',
+      type: 'VARCHAR(30)',
       primaryKey: true,
     },
     title: {

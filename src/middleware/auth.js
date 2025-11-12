@@ -1,18 +1,17 @@
 const tokenManager = require('../utils/tokenManager');
-const AuthenticationsError = require('../exception/AuthenticationsError');
+const AuthenticationError = require('../exception/AuthenticationError');
 const InvariantError = require('../exception/InvariantError');
 
 const auth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-
     if (!authHeader) {
-      throw new AuthenticationsError('Token tidak ditemukan');
+      throw new AuthenticationError('Token tidak ditemukan');
     }
 
-    const token = authHeader.split(' ')[1];
+    const token = authHeader.replace(/^Bearer\s+/i, '').trim();
     if (!token) {
-      throw new InvariantError('Format token tidak valdi');
+      throw new InvariantError('Token tidak provided');
     }
 
     const decoded = tokenManager.verifyAccessToken(token);

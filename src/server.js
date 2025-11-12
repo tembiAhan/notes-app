@@ -7,6 +7,7 @@ const app = express();
 const notesRouter = require('./api/notes/routes');
 const usersRouter = require('./api/users/routes');
 const authenticationsRouter = require('./api/authentications/routes');
+const collaborationsRouter = require('./api/collaborations/routes');
 
 const ClientError = require('./exception/ClientError');
 
@@ -16,6 +17,7 @@ app.use(cors());
 app.use('/notes', notesRouter);
 app.use('/users', usersRouter);
 app.use('/authentications', authenticationsRouter);
+app.use('/collaborations', collaborationsRouter);
 
 // Middleware error handler
 // eslint-disable-next-line no-unused-vars

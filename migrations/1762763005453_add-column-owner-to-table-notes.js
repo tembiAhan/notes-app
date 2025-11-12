@@ -7,5 +7,5 @@ export const up = (pgm) => {
 };
 
 export const down = (pgm) => {
-  pgm.dropColumn('notes');
+  pgm.dropColumn('notes', 'owner');
 };
