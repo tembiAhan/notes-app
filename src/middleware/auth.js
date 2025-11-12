@@ -5,13 +5,11 @@ const InvariantError = require('../exception/InvariantError');
 const auth = (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-
     if (!authHeader) {
       throw new AuthenticationError('Token tidak ditemukan');
     }
 
     const token = authHeader.replace(/^Bearer\s+/i, '').trim();
-
     if (!token) {
       throw new InvariantError('Token tidak provided');
     }

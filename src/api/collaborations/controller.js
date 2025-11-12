@@ -8,7 +8,7 @@ const notesService = new NotesService();
 
 const postCollaborationController = asyncHandler(async (req, res) => {
   validatePayload(req.body);
-  const { owner } = req;
+  const { userId: owner } = req;
   const { noteId, userId } = req.body;
 
   await notesService.verifyNoteOwner(noteId, owner);
@@ -28,7 +28,7 @@ const postCollaborationController = asyncHandler(async (req, res) => {
 
 const deleteCollaborationController = asyncHandler(async (req, res) => {
   validatePayload(req.body);
-  const { owner } = req;
+  const { userId: owner } = req;
   const { noteId, userId } = req.body;
 
   await notesService.verifyNoteOwner(noteId, owner);

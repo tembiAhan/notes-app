@@ -14,6 +14,10 @@ export const up = (pgm) => {
     },
   });
 
+  pgm.addConstraint('collaborations', 'unique_note_id_user_id', {
+    unique: ['note_id', 'user_id'],
+  });
+
   pgm.addConstraint(
     'collaborations',
     'fk_collaborations_note_id',
