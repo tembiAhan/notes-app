@@ -4,7 +4,7 @@ const CollaborationsService = require('../../service/postgre/collaborationsServi
 const NotesService = require('../../service/postgre/NotesService');
 
 const collaborationsService = new CollaborationsService();
-const notesService = new NotesService();
+const notesService = new NotesService(collaborationsService);
 
 const postCollaborationController = asyncHandler(async (req, res) => {
   validatePayload(req.body);

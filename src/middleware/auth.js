@@ -16,7 +16,6 @@ const auth = (req, res, next) => {
 
     const decoded = tokenManager.verifyAccessToken(token);
     req.userId = decoded.id;
-    req.username = decoded.username;
     next();
   } catch (e) {
     next(e);

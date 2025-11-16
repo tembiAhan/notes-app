@@ -6,12 +6,16 @@ const InvariantError = require('../../exception/InvariantError');
 const NotFoundError = require('../../exception/NotFoundError');
 const AuthorizationError = require('../../exception/AuthorizationError');
 
-const CollaborationsService = require('./collaborationsService');
-
 class NotesService {
-  constructor() {
+  constructor(collaborationsService) {
     this._pool = new Pool();
-    this.collaborationsService = new CollaborationsService();
+    this._collaborationsService = collaborationsService;
+
+    console.log('NotesService initialized');
+    console.log(
+      'CollaborationsService:',
+      this._collaborationsService ? 'EXISTS' : 'MISSING'
+    );
   }
 
   async addNote({ title, body, tags, owner }) {
@@ -45,6 +49,8 @@ class NotesService {
   }
 
   async getNoteById(id) {
+    console.log('=== getNoteById called ===');
+    console.log('Note ID:', id);
     const query = {
       text: `SELECT notes.*, users.username 
              FROM notes 
@@ -54,10 +60,14 @@ class NotesService {
     };
 
     const result = await this._pool.query(query);
+    console.log('Query result:', result.rows);
     if (!result.rows.length) {
       throw new NotFoundError('Catatan tidak ditemukan');
     }
-    return result.rows.map(mapDBToModel)[0];
+    const mapped = result.rows.map(mapDBToModel)[0];
+    console.log('Mapped result:', mapped);
+
+    return mapped;
   }
 
   async editNoteById(id, { title, body, tags }) {
@@ -97,13 +107,11 @@ class NotesService {
     };
 
     const result = await this._pool.query(query);
-
     if (!result.rows.length) {
       throw new NotFoundError('Catatan tidak ditemukan');
     }
 
     const note = result.rows[0];
-
     if (note.owner !== owner) {
       throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
     }
@@ -112,13 +120,22 @@ class NotesService {
   async verifyNoteAccess(noteId, userId) {
     try {
       await this.verifyNoteOwner(noteId, userId);
-    } catch (e) {
-      if (e instanceof InvariantError) throw e;
-      try {
-        await this.collaborationsService.verifyCollaborator(noteId, userId);
-      } catch {
-        throw e;
+      return;
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error;
       }
+      if (error instanceof AuthorizationError) {
+        try {
+          await this._collaborationsService.verifyCollaborator(noteId, userId);
+          return;
+        } catch {
+          throw new AuthorizationError(
+            'Anda tidak berhak mengakses resource ini'
+          );
+        }
+      }
+      throw error;
     }
   }
 }
