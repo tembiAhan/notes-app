@@ -1,7 +1,10 @@
 const asyncHandler = require('../../utils/asyncHandler');
 const { validatePayload } = require('./validator');
 const NotesService = require('../../service/postgre/NotesService');
-const notesService = new NotesService();
+const CollaborationsService = require('../../service/postgre/collaborationsService');
+
+const collaborationsService = new CollaborationsService();
+const notesService = new NotesService(collaborationsService);
 
 const postNoteController = asyncHandler(async (req, res) => {
   validatePayload(req.body);
