@@ -27,4 +27,20 @@ const getUserByIdController = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { postUserController, getUserByIdController };
+const getUserByUsernameController = asyncHandler(async (req, res) => {
+  const { username = '' } = req.query;
+  const users = await userService.getUserByUsername(username);
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      users,
+    },
+  });
+});
+
+module.exports = {
+  postUserController,
+  getUserByIdController,
+  getUserByUsernameController,
+};
