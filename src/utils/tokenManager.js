@@ -4,7 +4,7 @@ const InvariantError = require('../exception/InvariantError');
 const tokenManager = {
   generateAccessToken: (payload) => {
     return Jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, {
-      expiresIn: '15d',
+      expiresIn: '10h',
     });
   },
   generateRefreshToken: (payload) => {
@@ -16,7 +16,6 @@ const tokenManager = {
     try {
       return Jwt.verify(payload, process.env.ACCESS_TOKEN_KEY);
     } catch (error) {
-      // Throw specific errors based on JWT error type
       if (error.name === 'TokenExpiredError') {
         throw new InvariantError('Token telah kadaluarsa');
       } else if (error.name === 'JsonWebTokenError') {

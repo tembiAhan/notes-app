@@ -46,7 +46,7 @@ class UsersService {
 
   async getUserById(userId) {
     const query = {
-      text: 'SELECT * FROM users WHERE id = $1',
+      text: 'SELECT id, username, fullname FROM users WHERE id = $1',
       values: [userId],
     };
 
@@ -66,7 +66,7 @@ class UsersService {
 
     const result = await this._pool.query(query);
     if (!result.rows.length) {
-      throw new InvariantError('Kredensial yang Anda berikan salah');
+      throw new AuthenticationError('Kredensial yang Anda berikan salah');
     }
 
     const { id, password: hashedPassword } = result.rows[0];
@@ -77,6 +77,16 @@ class UsersService {
     }
 
     return id;
+  }
+
+  async getUserByUsername(username) {
+    const query = {
+      text: 'SELECT id, username FROM users WHERE username LIKE $1',
+      values: [`%${username}%`],
+    };
+
+    const result = await this._pool.query(query);
+    return result.rows;
   }
 }
 
