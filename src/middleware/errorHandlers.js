@@ -18,7 +18,6 @@ const errorHandlers = (e, req, res, next) => {
   }
 
   // error tak terduga
-  console.log(e);
   res.status(500).json({
     status: 'error',
     message: 'Terjadi kegagalan pada server kami.',
