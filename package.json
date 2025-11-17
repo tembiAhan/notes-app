@@ -2,11 +2,11 @@
   "name": "notes--app--backend",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "server",
   "scripts": {
-    "start:prod": "NODE_ENV = production node ./src/server.js",
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js",
+    "start:prod": "NODE_ENV = production node server",
+    "start": "node server",
+    "dev": "nodemon server",
     "lint": "eslint ./src",
     "migrate": "node-pg-migrate"
   },
