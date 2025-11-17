@@ -1,5 +1,4 @@
 const { nanoid } = require('nanoid');
-const { Pool } = require('pg');
 const { mapDBToModel } = require('../../utils/mapDBToModel');
 
 const InvariantError = require('../../exception/InvariantError');
@@ -7,15 +6,9 @@ const NotFoundError = require('../../exception/NotFoundError');
 const AuthorizationError = require('../../exception/AuthorizationError');
 
 class NotesService {
-  constructor(collaborationsService) {
-    this._pool = new Pool();
+  constructor(pool, collaborationsService) {
+    this._pool = pool;
     this._collaborationsService = collaborationsService;
-
-    console.log('NotesService initialized');
-    console.log(
-      'CollaborationsService:',
-      this._collaborationsService ? 'EXISTS' : 'MISSING'
-    );
   }
 
   async addNote({ title, body, tags, owner }) {
@@ -49,8 +42,6 @@ class NotesService {
   }
 
   async getNoteById(id) {
-    console.log('=== getNoteById called ===');
-    console.log('Note ID:', id);
     const query = {
       text: `SELECT notes.*, users.username 
              FROM notes 
@@ -60,14 +51,11 @@ class NotesService {
     };
 
     const result = await this._pool.query(query);
-    console.log('Query result:', result.rows);
     if (!result.rows.length) {
       throw new NotFoundError('Catatan tidak ditemukan');
     }
-    const mapped = result.rows.map(mapDBToModel)[0];
-    console.log('Mapped result:', mapped);
 
-    return mapped;
+    return result.rows.map(mapDBToModel)[0];
   }
 
   async editNoteById(id, { title, body, tags }) {
