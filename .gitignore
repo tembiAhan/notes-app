@@ -1,4 +1,5 @@
 node_modules/
 MyKeyPair.pem
 .env
+.env.production
 notes.txt
