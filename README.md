@@ -64,20 +64,22 @@ npm install
 ```
 ### 3. Konfigurasi Environment Variables
 Buat file .env di root:
-<-- server configuration !-->
+```.env
+# server configurations
 HOST=localhost
 PORT=5000
 
-<-- PostgreSQL !-->
+# database configurations
 PGUSER=youruserdatabase
 PGHOST=localhost
 PGPASSWORD=yourpassword
 PGDATABASE=notes_app
 PGPORT=5432
 
-<-- JWT !-->
+# JWT
 ACCESS_TOKEN_KEY=youraccesstokenkey
 REFRESH_TOKEN_KEY=yourrefreshtokenkey
+```
 
 ---
 
@@ -94,6 +96,8 @@ Server berjalan di:
 ```arduino
 http://localhost:5000
 ```
+
+---
 
 ## Daftar Endpoint
 ### Authentication
@@ -124,16 +128,16 @@ http://localhost:5000
 | POST   | /collaborations | Tambah kolaborator |
 | DELETE | /collaborations | Hapus kolaborator  |
 
+---
+
 ## Pengujian API
 
 Gunakan Postman / Thunder Client / Insomnia.
 
+---
+
 ## Kontribusi
-
-Fork repo
-
-Buat branch baru
-
-Commit perubahan
-
-Kirim pull request
+- Fork repo
+- Buat branch baru
+- Commit perubahan
+- Kirim pull request
