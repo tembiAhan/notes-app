@@ -36,7 +36,7 @@ Struktur aplikasi dibuat modular agar lebih mudah dipelihara, scalable, dan siap
 
 ---
 
-## 🛠️ Teknologi yang Digunakan
+## Teknologi yang Digunakan
 
 | Teknologi | Deskripsi |
 |----------|----------|
