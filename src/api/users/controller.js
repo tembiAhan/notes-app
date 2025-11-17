@@ -1,13 +1,17 @@
+// Import utils
 const asyncHandler = require('../../utils/asyncHandler');
+
+// Import validator
 const { validatePayload } = require('./validator');
-const UsersService = require('../../service/postgre/UsersService');
-const userService = new UsersService();
+
+// Import service
+const { usersService } = require('../../service/postgre');
 
 const postUserController = asyncHandler(async (req, res) => {
   validatePayload(req.body);
   const { username, password, fullname } = req.body;
 
-  const userId = await userService.addUser({ username, password, fullname });
+  const userId = await usersService.addUser({ username, password, fullname });
   res.status(201).json({
     status: 'success',
     message: 'User berhasil ditambahkan',
@@ -18,7 +22,7 @@ const postUserController = asyncHandler(async (req, res) => {
 });
 
 const getUserByIdController = asyncHandler(async (req, res) => {
-  const user = await userService.getUserById(req.params.id);
+  const user = await usersService.getUserById(req.params.id);
   res.status(200).json({
     status: 'success',
     data: {
@@ -29,7 +33,7 @@ const getUserByIdController = asyncHandler(async (req, res) => {
 
 const getUserByUsernameController = asyncHandler(async (req, res) => {
   const { username = '' } = req.query;
-  const users = await userService.getUserByUsername(username);
+  const users = await usersService.getUserByUsername(username);
 
   res.status(200).json({
     status: 'success',

@@ -1,10 +1,11 @@
+//  Import utils
 const asyncHandler = require('../../utils/asyncHandler');
-const { validatePayload } = require('./validator');
-const NotesService = require('../../service/postgre/NotesService');
-const CollaborationsService = require('../../service/postgre/collaborationsService');
 
-const collaborationsService = new CollaborationsService();
-const notesService = new NotesService(collaborationsService);
+// Import validator
+const { validatePayload } = require('./validator');
+
+// Import service
+const { notesService } = require('../../service/postgre');
 
 const postNoteController = asyncHandler(async (req, res) => {
   validatePayload(req.body);

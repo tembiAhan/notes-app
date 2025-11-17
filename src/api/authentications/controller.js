@@ -1,15 +1,19 @@
+// Import utils
+const tokenManager = require('../../utils/tokenManager');
+const asyncHandler = require('../../utils/asyncHandler');
+
+// Import validator
 const {
   postValidatePayload,
   putValidatePayload,
   deleteValidatePayload,
 } = require('./validator');
-const tokenManager = require('../../utils/tokenManager');
-const asyncHandler = require('../../utils/asyncHandler');
-const AuthenticationsService = require('../../service/postgre/authenticationsService');
-const UsersService = require('../../service/postgre/UsersService');
 
-const authenticationsService = new AuthenticationsService();
-const usersService = new UsersService();
+// Import service
+const {
+  authenticationsService,
+  usersService,
+} = require('../../service/postgre');
 
 const postAuthenticationsController = asyncHandler(async (req, res) => {
   postValidatePayload(req.body);

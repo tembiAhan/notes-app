@@ -1,5 +1,4 @@
 const { nanoid } = require('nanoid');
-const { Pool } = require('pg');
 const { mapDBToModel } = require('../../utils/mapDBToModel');
 
 const InvariantError = require('../../exception/InvariantError');
@@ -7,8 +6,8 @@ const NotFoundError = require('../../exception/NotFoundError');
 const AuthorizationError = require('../../exception/AuthorizationError');
 
 class NotesService {
-  constructor(collaborationsService) {
-    this._pool = new Pool();
+  constructor(pool, collaborationsService) {
+    this._pool = pool;
     this._collaborationsService = collaborationsService;
 
     console.log('NotesService initialized');
